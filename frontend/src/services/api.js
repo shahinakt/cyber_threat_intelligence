@@ -1,33 +1,20 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8000'; // Replace with FastAPI backend
+// Set your backend base URL
+const BASE_URL = 'http://localhost:8000';
 
-export const loginUser = async (data) => {
-  try {
-    const res = await axios.post(`${BASE_URL}/login`, data);
-    return res.data;
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
-};
+// Auth routes (they're under the /auth prefix in FastAPI)
+export const loginUser = (data) => axios.post(`${BASE_URL}/auth/login`, data);
+export const registerUser = (data) => axios.post(`${BASE_URL}/auth/register`, data);
 
-export const registerUser = async (data) => {
-  try {
-    const res = await axios.post(`${BASE_URL}/register`, data);
-    return res.data;
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
-};
+// Threat reporting
+export const reportThreat = (data, token) =>
+  axios.post(`${BASE_URL}/report`, data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 
-export const reportThreat = async (data) => {
-  try {
-    const res = await axios.post(`${BASE_URL}/report-threat`, data);
-    return res.data;
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
-};
+// Get user data (example route, make sure it's implemented in your backend)
+export const getUserData = (token) =>
+  axios.get(`${BASE_URL}/user`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });

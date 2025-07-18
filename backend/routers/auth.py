@@ -14,7 +14,13 @@ def register(user: User):
 
 @router.post("/login")
 def login(user: User):
-    if not db.users.find_one({"username": user.username, "password": user.password}):
-        raise HTTPException(status_code=401, detail="Invalid credentials")
-    token = create_token(user.username)
-    return {"token": token}
+    try:
+        if not db.users.find_one({"username": user.username, "password": user.password}):
+            raise HTTPException(status_code=401, detail="Invalid credentials")
+        token = create_token(user.username)
+        return {"token": token}
+    except Exception as e:
+        print("🔥 Login error:", e)
+        raise HTTPException(status_code=500, detail="Something broke during login")
+
+

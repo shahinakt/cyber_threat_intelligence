@@ -4,6 +4,6 @@ from datetime import datetime
 
 class Threat(BaseModel):
     type: str
-    description: Optional[str] = None
+    description: Optional[str]
     created_at: Optional[datetime] = datetime.utcnow()
     
