@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// Set your backend base URL
+// Set backend base URL
 const BASE_URL = 'http://localhost:8000';
 
 // Auth routes (they're under the /auth prefix in FastAPI)
@@ -13,7 +13,7 @@ export const reportThreat = (data, token) =>
     headers: { Authorization: `Bearer ${token}` },
   });
 
-// Get user data (example route, make sure it's implemented in your backend)
+// Get user data 
 export const getUserData = (token) =>
   axios.get(`${BASE_URL}/user`, {
     headers: { Authorization: `Bearer ${token}` },
