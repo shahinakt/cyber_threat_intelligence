@@ -16,7 +16,7 @@ SUSPICIOUS_DOMAINS = [
     "short.cm"
 ]
 
-def analyze_url(url: str) -> dict:
+def analyze_url(url: str, _depth: int = 0) -> dict:
     """
     Analyze URL for phishing indicators
     """
@@ -53,16 +53,50 @@ def analyze_url(url: str) -> dict:
         if subdomain_count > 3:
             score += 20
             indicators.append(f"Excessive subdomains ({subdomain_count})")
+
+        # Check for suspicious keywords in the URL path or query (e.g., '/account/confirm', 'verify', 'login')
+        path_and_query = (parsed.path or '') + ('?' + parsed.query if parsed.query else '')
+        path_and_query_lower = path_and_query.lower()
+        matched_keywords = [kw for kw in SUSPICIOUS_KEYWORDS if kw in path_and_query_lower]
+        if matched_keywords:
+            # Presence of account/login/confirm keywords in path/query is a stronger phishing signal
+            score += 20
+            indicators.append(f"Suspicious keywords in path/query: {', '.join(matched_keywords)}")
         
-        # Check for URL shorteners and try to expand them to inspect the final destination
-        if any(shortener in domain for shortener in SUSPICIOUS_DOMAINS):
-            # Give shorteners slightly higher weight since they often obfuscate targets
-            score += 15
-            indicators.append("URL shortener detected")
-            try:
-                # Follow redirects to get final destination (use HEAD for speed)
-                resp = requests.head(url, allow_redirects=True, timeout=5)
-                final_url = getattr(resp, 'url', None)
+        # Check URL shorteners and try to expand them to inspect the final destination
+        # Differentiate between the shortener service root (e.g. https://bit.ly) and a short link (e.g. https://bit.ly/abcd)
+        if any(shortener == domain or shortener in domain for shortener in SUSPICIOUS_DOMAINS):
+            path = parsed.path.strip('/')
+            # If there's no path, this is just the shortener homepage — treat as low risk
+            if not path:
+                indicators.append("Shortener service domain (no short path) — homepage detected")
+                # small informational score only
+                score += 0
+            else:
+                # Give short links a weight since they often obfuscate targets
+                score += 20
+                indicators.append("URL shortener detected (short link)")
+                final_url = None
+                # Try HEAD first; if that fails or doesn't redirect, try GET (some services block HEAD)
+                try:
+                    resp = requests.head(url, allow_redirects=True, timeout=5)
+                    final_url = getattr(resp, 'url', None)
+                except Exception:
+                    final_url = None
+
+                if not final_url or final_url == url:
+                    # Fallback to GET to follow redirects (stream to avoid downloading full body)
+                    try:
+                        resp = requests.get(url, allow_redirects=True, timeout=7, stream=True)
+                        final_url = getattr(resp, 'url', None)
+                        # close stream quickly
+                        try:
+                            resp.close()
+                        except:
+                            pass
+                    except Exception:
+                        final_url = None
+
                 if final_url and final_url != url:
                     final_domain = urlparse(final_url).netloc
                     indicators.append(f"Shortener expands to {final_domain}")
@@ -70,27 +104,58 @@ def analyze_url(url: str) -> dict:
                     if urlparse(final_url).scheme != 'https':
                         score += 5
                         indicators.append("Expanded URL has no HTTPS")
-                    # If final domain is suspicious or another shortener, increase score
+                    # If final domain is another shortener or suspicious, increase score
                     if any(s in final_domain for s in SUSPICIOUS_DOMAINS):
                         score += 10
                         indicators.append("Expanded destination appears to be a shortener or suspicious domain")
-            except Exception:
-                # Ignore expansion failures (network/timeouts)
-                pass
+
+                    # If we haven't already expanded (depth control), analyze the final destination and merge results
+                    if _depth == 0:
+                        try:
+                            # Recurse with depth to avoid infinite loops; merge scores but mark indicators
+                            expanded_result = analyze_url(final_url, _depth=1)
+                            # Merge: favor the expanded result's score and indicators
+                            score += int(expanded_result.get('risk_score', 0) * 0.6)
+                            indicators.append("Merged analysis from expanded destination")
+                            indicators.extend([f"expanded: {i}" for i in expanded_result.get('indicators', [])])
+                        except Exception:
+                            indicators.append("Failed to analyze expanded destination")
+                else:
+                    indicators.append("Could not expand shortener (redirect not observed or network error)")
         
         # Check HTTPS
         if parsed.scheme != 'https':
             score += 10
             indicators.append("No HTTPS encryption")
         
-        # Analyze content if accessible
+        # Analyze content if accessible. Prefer analyzing expanded URL when available (avoid re-fetching shortener landing pages)
         try:
-            response = requests.get(url, timeout=5, allow_redirects=True)
-            content_score, content_indicators = analyze_content(response.text, url)
-            score += content_score
-            indicators.extend(content_indicators)
-        except:
-            pass
+            # If we detected and expanded a shortener above, prefer the final URL for content analysis
+            content_target = None
+            if any(ind for ind in indicators if ind.startswith("Shortener expands to")):
+                # extract the last expanded URL domain indicator to decide content target
+                # We'll attempt to use the last 'Shortener expands to {domain}' indicator
+                expanded_inds = [ind for ind in indicators if ind.startswith("Shortener expands to")]
+                if expanded_inds:
+                    # The code above appended domain only; attempt to re-fetch the final resolved URL via GET
+                    try:
+                        resp = requests.get(url, allow_redirects=True, timeout=7)
+                        content_target = getattr(resp, 'url', None)
+                        content_html = resp.text
+                    except Exception:
+                        content_target = None
+                        content_html = None
+            if not content_target:
+                resp = requests.get(url, timeout=5, allow_redirects=True)
+                content_html = resp.text
+
+            if content_html:
+                content_score, content_indicators = analyze_content(content_html, url)
+                score += content_score
+                indicators.extend(content_indicators)
+        except Exception:
+            # Keep silent on network/content failures but indicate inability to fetch
+            indicators.append("Content fetch failed or blocked")
         
         risk_level = "safe"
         if score >= 60:
