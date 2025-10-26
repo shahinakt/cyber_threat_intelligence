@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authAPI } from '../services/api';
 import './RegisterForm.css';
 
 const RegisterForm = () => {
@@ -44,29 +45,29 @@ const RegisterForm = () => {
     setError('');
 
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password
-        })
-      });
+      // Use the centralized API helper which uses the configured baseURL
+      const payload = {
+        email: formData.email,
+        password: formData.password,
+        // backend expects `full_name` field
+        full_name: formData.name,
+      };
 
-      const data = await response.json();
+      const { data } = await authAPI.register(payload);
 
-      if (response.ok) {
+      // backend returns token and user_id; store token and navigate
+      if (data?.token) {
         localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
+        // store minimal user info
+        localStorage.setItem('user', JSON.stringify({ email: formData.email, full_name: formData.name }));
         navigate('/dashboard');
       } else {
-        setError(data.message || 'Registration failed');
+        setError(data?.message || 'Registration failed');
       }
     } catch (err) {
-      setError('Network error. Please try again.');
+      // prefer server-sent error message if available
+      const msg = err?.response?.data?.detail || err?.response?.data?.message;
+      setError(msg || 'Network error. Please try again.');
     } finally {
       setLoading(false);
     }

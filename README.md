@@ -175,6 +175,17 @@ Create an account or login at `/register` or `/login`
 - `GET /api/admin/users` - Get all users
 - `PATCH /api/admin/users/{id}/moderate` - Moderate user
 
+## Using the Swagger UI (Authorize)
+
+The project exposes interactive API docs at `http://localhost:8000/docs` (Swagger UI). Several endpoints require JWT bearer authentication. To call protected endpoints from the docs:
+
+1. Use the `POST /api/auth/login` endpoint in the docs to obtain a token (the response includes `token`).
+2. Click the green "Authorize" button in the top-right of the Swagger UI.
+3. In the modal, paste the token prefixed with `Bearer ` (for example: `Bearer eyJhbGciOiJIUzI1NiI...`) and click **Authorize**.
+4. Close the modal and call protected endpoints — Swagger will send the `Authorization: Bearer <token>` header automatically.
+
+If you prefer, you can also paste the raw token (without `Bearer `) in some setups, but including the `Bearer ` prefix ensures the header format matches the backend's HTTPBearer requirement.
+
 ## MITRE ATT&CK Integration
 
 The platform maps threats to MITRE ATT&CK techniques:

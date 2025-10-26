@@ -67,9 +67,8 @@ export const malwareAPI = {
   scanFile: (file) => {
     const formData = new FormData();
     formData.append('file', file);
-    return api.post('/malware/scan-file', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    // Let the browser set the Content-Type (including boundary) for multipart/form-data
+    return api.post('/malware/scan-file', formData);
   },
   scanUrl: (url) => api.post('/malware/scan-url', { url }),
 };

@@ -7,6 +7,9 @@ import Home from './pages/Home';
 import ReportThreat from './pages/ReportThreat';
 import UserDashboardPage from './pages/UserDashboardPage';
 import GlobalDashboardPage from './pages/GlobalDashboardPage';
+import ScanPage from './pages/ScanPage';
+import MalwareScanResult from './components/MalwareScanResult';
+import PhishingPage from './pages/PhishingPage';
 import AdminPage from './pages/AdminPage';
 import { authService } from './services/auth';
 
@@ -78,6 +81,30 @@ function App() {
               <ReportThreat /> : 
               <Navigate to="/login" />
             } 
+          />
+          <Route
+            path="/scan"
+            element={
+              isAuthenticated ?
+              <ScanPage /> :
+              <Navigate to="/login" />
+            }
+          />
+          <Route
+            path="/scan/:scanId"
+            element={
+              isAuthenticated ?
+              <MalwareScanResult /> :
+              <Navigate to="/login" />
+            }
+          />
+          <Route
+            path="/phishing"
+            element={
+              isAuthenticated ?
+              <PhishingPage /> :
+              <Navigate to="/login" />
+            }
           />
           <Route 
             path="/dashboard" 

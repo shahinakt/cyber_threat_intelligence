@@ -9,7 +9,11 @@ SUSPICIOUS_KEYWORDS = [
 ]
 
 SUSPICIOUS_DOMAINS = [
-    "bit.ly", "tinyurl.com", "short.link", "t.co"
+    # Common URL shorteners and redirect services
+    "bit.ly", "tinyurl.com", "short.link", "t.co", "ow.ly", "goo.gl",
+    "is.gd", "buff.ly", "adf.ly", "bitly.com", "lnkd.in", "rb.gy",
+    "shorturl.at", "rebrand.ly", "cutt.ly", "tiny.cc", "soo.gd", "v.gd",
+    "short.cm"
 ]
 
 def analyze_url(url: str) -> dict:
@@ -50,10 +54,29 @@ def analyze_url(url: str) -> dict:
             score += 20
             indicators.append(f"Excessive subdomains ({subdomain_count})")
         
-        # Check for URL shorteners
+        # Check for URL shorteners and try to expand them to inspect the final destination
         if any(shortener in domain for shortener in SUSPICIOUS_DOMAINS):
-            score += 10
+            # Give shorteners slightly higher weight since they often obfuscate targets
+            score += 15
             indicators.append("URL shortener detected")
+            try:
+                # Follow redirects to get final destination (use HEAD for speed)
+                resp = requests.head(url, allow_redirects=True, timeout=5)
+                final_url = getattr(resp, 'url', None)
+                if final_url and final_url != url:
+                    final_domain = urlparse(final_url).netloc
+                    indicators.append(f"Shortener expands to {final_domain}")
+                    # If expanded URL lacks HTTPS, increase score slightly
+                    if urlparse(final_url).scheme != 'https':
+                        score += 5
+                        indicators.append("Expanded URL has no HTTPS")
+                    # If final domain is suspicious or another shortener, increase score
+                    if any(s in final_domain for s in SUSPICIOUS_DOMAINS):
+                        score += 10
+                        indicators.append("Expanded destination appears to be a shortener or suspicious domain")
+            except Exception:
+                # Ignore expansion failures (network/timeouts)
+                pass
         
         # Check HTTPS
         if parsed.scheme != 'https':

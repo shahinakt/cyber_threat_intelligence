@@ -1,3 +1,4 @@
 {
-    "postman.settings.dotenv-detection-notification-visibility": false
+    "postman.settings.dotenv-detection-notification-visibility": false,
+    "python.defaultInterpreterPath": "C:\\Users\\dell\\Desktop\\Projects\\cyber_threat_intelligence\\backend\\venv\\Scripts\\python.exe"
 }

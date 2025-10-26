@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AlertTriangle, Send, Upload } from 'lucide-react';
+import { AlertTriangle, Send } from 'lucide-react';
 import api from '../services/api';
 
 const ReportThreat = () => {
@@ -57,7 +57,24 @@ const ReportThreat = () => {
         longitude: ''
       });
     } catch (err) {
-      setError(err.response?.data?.detail || 'Failed to report threat');
+      // Backend validation errors (FastAPI/Pydantic) often return an array of error objects
+      const detail = err.response?.data?.detail;
+      if (Array.isArray(detail)) {
+        // Format each error object into a readable string
+        const messages = detail.map(d => {
+          try {
+            const loc = Array.isArray(d.loc) ? d.loc.join('.') : d.loc;
+            return d.msg ? `${d.msg} (${loc})` : JSON.stringify(d);
+          } catch (e) {
+            return JSON.stringify(d);
+          }
+        });
+        setError(messages.join('; '));
+      } else if (typeof detail === 'string') {
+        setError(detail);
+      } else {
+        setError(err.response?.data?.detail || err.message || 'Failed to report threat');
+      }
     } finally {
       setLoading(false);
     }

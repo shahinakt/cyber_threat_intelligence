@@ -1,6 +1,7 @@
 import api from './api';
 
-const TOKEN_KEY = 'auth_token';
+// Use a common key 'token' so components that read localStorage directly remain compatible
+const TOKEN_KEY = 'token';
 
 export const authService = {
   async login(email, password) {

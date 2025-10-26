@@ -2,13 +2,16 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Shield, LogOut } from 'lucide-react';
 
-const Navbar = () => {
+const Navbar = ({ isAuthenticated, onLogout, user }) => {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
+    if (onLogout) {
+      onLogout();
+    } else {
+      localStorage.removeItem('token');
+      navigate('/login');
+    }
   };
 
   return (
@@ -20,10 +23,12 @@ const Navbar = () => {
             <span>Cyber Threat Intel</span>
           </Link>
 
-          {token && (
+          {isAuthenticated && (
             <div className="flex space-x-6 items-center">
               <Link to="/" className="hover:text-blue-200 transition">Home</Link>
               <Link to="/report" className="hover:text-blue-200 transition">Report Threat</Link>
+              <Link to="/scan" className="hover:text-blue-200 transition">Scan</Link>
+              <Link to="/phishing" className="hover:text-blue-200 transition">Phishing</Link>
               <Link to="/dashboard" className="hover:text-blue-200 transition">Dashboard</Link>
               <Link to="/global" className="hover:text-blue-200 transition">Global View</Link>
               <Link to="/admin" className="hover:text-blue-200 transition">Admin</Link>
