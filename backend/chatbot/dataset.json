@@ -1,0 +1,139 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": ["hello", "hi", "hey", "good morning", "good afternoon", "greetings"],
+      "responses": [
+        "Hello! How can I assist you with cybersecurity today?",
+        "Hi there! I'm here to help with threat intelligence.",
+        "Greetings! Ask me anything about cyber threats."
+      ]
+    },
+    {
+      "tag": "malware_info",
+      "patterns": ["what is malware", "types of malware", "malware definition", "tell me about malware", "explain malware"],
+      "responses": [
+        "Malware is malicious software designed to harm, exploit, or otherwise compromise systems. Common types include viruses, trojans, ransomware, spyware, worms, and rootkits. Each type has different attack vectors and impacts."
+      ]
+    },
+    {
+      "tag": "phishing_info",
+      "patterns": ["what is phishing", "phishing attack", "how to detect phishing", "phishing email", "spear phishing"],
+      "responses": [
+        "Phishing is a cyber attack where attackers impersonate legitimate entities to steal sensitive information. Signs include: suspicious links, urgent language, spelling errors, unverified sender addresses, and requests for sensitive data. Always verify sender authenticity before clicking links."
+      ]
+    },
+    {
+      "tag": "ransomware_info",
+      "patterns": ["what is ransomware", "ransomware attack", "how does ransomware work", "ransomware prevention"],
+      "responses": [
+        "Ransomware encrypts your files and demands payment for decryption. Prevention includes: regular backups, updated software, email filtering, security awareness training, and multi-factor authentication. Never pay the ransom as it doesn't guarantee file recovery."
+      ]
+    },
+    {
+      "tag": "mitre_attack",
+      "patterns": ["what is mitre attack", "mitre att&ck", "mitre framework", "attack techniques", "mitre tactics"],
+      "responses": [
+        "MITRE ATT&CK is a globally-accessible knowledge base of adversary tactics and techniques based on real-world observations. It includes 14 tactics (Initial Access, Execution, Persistence, etc.) and hundreds of techniques that help organizations understand and defend against cyber threats."
+      ]
+    },
+    {
+      "tag": "report_threat",
+      "patterns": ["how to report", "report threat", "submit threat", "report attack", "file report"],
+      "responses": [
+        "To report a threat: 1) Go to the 'Report Threat' page, 2) Fill in threat details (title, description, type, severity), 3) Add MITRE ATT&CK technique if known, 4) Include Indicators of Compromise (IoCs) like IPs, domains, or hashes, 5) Submit. Our AI will analyze and classify your report."
+      ]
+    },
+    {
+      "tag": "ioc_info",
+      "patterns": ["what are iocs", "indicators of compromise", "threat indicators", "ioc examples"],
+      "responses": [
+        "Indicators of Compromise (IoCs) are forensic artifacts suggesting a system breach. Common IoCs include: suspicious IP addresses, malicious domains, file hashes (MD5, SHA256), registry changes, unusual network traffic, and suspicious processes. Document all IoCs when reporting threats."
+      ]
+    },
+    {
+      "tag": "data_breach",
+      "patterns": ["data breach", "what is data breach", "breach response", "data leak"],
+      "responses": [
+        "A data breach is unauthorized access to sensitive data. Response steps: 1) Contain the breach, 2) Investigate scope and cause, 3) Notify affected parties, 4) Implement remediation, 5) Review security controls. Report breaches to relevant authorities within required timeframes."
+      ]
+    },
+    {
+      "tag": "ddos_info",
+      "patterns": ["ddos attack", "denial of service", "what is ddos", "distributed denial of service"],
+      "responses": [
+        "DDoS (Distributed Denial of Service) attacks overwhelm systems with traffic from multiple sources, making services unavailable. Mitigation includes: traffic filtering, rate limiting, load balancing, CDN services, and DDoS protection services. Monitor traffic patterns for early detection."
+      ]
+    },
+    {
+      "tag": "security_best_practices",
+      "patterns": ["security tips", "best practices", "how to stay safe", "security advice", "cyber hygiene"],
+      "responses": [
+        "Key security practices: 1) Use strong, unique passwords, 2) Enable multi-factor authentication (MFA), 3) Keep software updated, 4) Be cautious with emails and links, 5) Regular backups, 6) Use reputable security software, 7) Encrypt sensitive data, 8) Use VPN on public networks."
+      ]
+    },
+    {
+      "tag": "zero_day",
+      "patterns": ["zero day", "0day", "zero day exploit", "what is zero day"],
+      "responses": [
+        "A zero-day vulnerability is a security flaw unknown to the vendor, meaning no patch exists. Zero-day exploits are highly valuable to attackers. Protection includes: behavior-based detection, sandboxing, network segmentation, and maintaining updated threat intelligence."
+      ]
+    },
+    {
+      "tag": "sql_injection",
+      "patterns": ["sql injection", "sqli", "database injection", "sql attack"],
+      "responses": [
+        "SQL injection exploits vulnerabilities in database queries to access/modify data. Prevention: use parameterized queries, input validation, least privilege database accounts, web application firewalls (WAF), and regular security testing."
+      ]
+    },
+    {
+      "tag": "apt_info",
+      "patterns": ["apt", "advanced persistent threat", "what is apt", "nation state attack"],
+      "responses": [
+        "Advanced Persistent Threats (APTs) are sophisticated, long-term attacks often by nation-state actors. Characteristics: stealthy, targeted, multi-stage, use custom malware. Defense requires: advanced threat detection, threat hunting, network segmentation, and continuous monitoring."
+      ]
+    },
+    {
+      "tag": "incident_response",
+      "patterns": ["incident response", "cyber incident", "security incident", "how to respond"],
+      "responses": [
+        "Incident response phases: 1) Preparation, 2) Detection & Analysis, 3) Containment, 4) Eradication, 5) Recovery, 6) Post-incident review. Maintain an incident response plan, trained team, and regular drills."
+      ]
+    },
+    {
+      "tag": "encryption",
+      "patterns": ["encryption", "what is encryption", "encrypt data", "cryptography"],
+      "responses": [
+        "Encryption converts data into unreadable format using algorithms. Types: symmetric (AES) and asymmetric (RSA). Use encryption for: data at rest, data in transit, communications, and backups. Always use strong, up-to-date encryption standards."
+      ]
+    },
+    {
+      "tag": "firewall",
+      "patterns": ["firewall", "what is firewall", "network security", "firewall types"],
+      "responses": [
+        "Firewalls monitor and control network traffic based on security rules. Types: packet filtering, stateful inspection, application layer, and next-generation firewalls (NGFW). Configure to block unauthorized access while allowing legitimate traffic."
+      ]
+    },
+    {
+      "tag": "vulnerability_scanning",
+      "patterns": ["vulnerability scan", "security scan", "penetration testing", "vuln assessment"],
+      "responses": [
+        "Vulnerability scanning identifies security weaknesses. Regular scanning helps: discover misconfigurations, missing patches, weak passwords, and exposed services. Combine with penetration testing for comprehensive security assessment."
+      ]
+    },
+    {
+      "tag": "social_engineering",
+      "patterns": ["social engineering", "human hacking", "manipulation attack", "pretexting"],
+      "responses": [
+        "Social engineering manipulates people into revealing confidential information. Common tactics: phishing, pretexting, baiting, quid pro quo. Defense: security awareness training, verification procedures, and healthy skepticism."
+      ]
+    },
+    {
+      "tag": "threat_intelligence",
+      "patterns": ["threat intelligence", "cyber intelligence", "threat intel", "threat information"],
+      "responses": [
+        "Threat intelligence is evidence-based knowledge about threats. Types: strategic, tactical, technical, and operational. Sources include: threat feeds, OSINT, dark web monitoring, and sharing communities. Use to prioritize defenses and response."
+      ]
+    }
+  ]
+}

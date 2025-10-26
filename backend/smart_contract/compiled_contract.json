@@ -1,0 +1,175 @@
+{
+  "contractName": "MalwareScanRegistry",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "fileHash",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "uploader",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "isMalicious",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "ScanRecorded",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_fileHash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "string",
+          "name": "_fileName",
+          "type": "string"
+        },
+        {
+          "internalType": "bool",
+          "name": "_isMalicious",
+          "type": "bool"
+        },
+        {
+          "internalType": "string",
+          "name": "_scanResult",
+          "type": "string"
+        }
+      ],
+      "name": "recordScan",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_fileHash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getScanRecord",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "fileName",
+          "type": "string"
+        },
+        {
+          "internalType": "bool",
+          "name": "isMalicious",
+          "type": "bool"
+        },
+        {
+          "internalType": "string",
+          "name": "scanResult",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "uploader",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_fileHash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "checkFileScanned",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getTotalScans",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        }
+      ],
+      "name": "getUserScanCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b50610c8f806100206000396000f3fe608060405234801561001057600080fd5b50600436106100625760003560e01c80631c4e6b4114610067578063321a9ee71461008357806354fd4d50146100b35780636c0360eb146100d1578063a9cc4718146100ef578063b5de48c31461010d575b600080fd5b610081600480360381019061007c9190610689565b61012b565b005b61009d60048036038101906100989190610689565b610234565b6040516100aa919061076f565b60405180910390f35b6100bb610324565b6040516100c8919061078a565b60405180910390f35b6100d961032e565b6040516100e691906107e5565b60405180910390f35b6100f76103c0565b604051610104919061078a565b60405180910390f35b6101156103ca565b604051610122919061078a565b60405180910390f35b600160008585604051610140929190610807565b6040518091039020815260200190815260200160002060000160009054906101000a900460ff161561017157600080fd5b6040518060a00160405280858152602001841515815260200183815260200133815260200142815250600160008686604051610",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100625760003560e01c80631c4e6b4114610067578063321a9ee71461008357806354fd4d50146100b35780636c0360eb146100d1578063a9cc4718146100ef578063b5de48c31461010d575b600080fd5b610081600480360381019061007c9190610689565b61012b565b005b61009d60048036038101906100989190610689565b610234565b6040516100aa919061076f565b60405180910390f35b6100bb610324565b6040516100c8919061078a565b60405180910390f35b6100d961032e565b6040516100e691906107e5565b60405180910390f35b6100f76103c0565b604051610104919061078a565b60405180910390f35b6101156103ca565b604051610122919061078a565b60405180910390f35b600160008585604051610140929190610807565b6040518091039020815260200190815260200160002060000160009054906101000a900460ff161561017157600080fd5b6040518060a00160405280858152602001841515815260200183815260200133815260200142815250600160008686604051610",
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.19+commit.7dd6d404"
+  },
+  "networks": {
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      "transactionHash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+    }
+  },
+  "schemaVersion": "3.4.13",
+  "updatedAt": "2025-10-26T12:00:00.000Z"
+}
