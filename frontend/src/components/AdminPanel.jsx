@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './AdminPanel.css';
 
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -48,7 +47,7 @@ const AdminPanel = () => {
         setSystemStats(data.stats || systemStats);
       }
     } catch (err) {
-      console.error('Error fetching admin data:', err);
+      // Handle silently
     } finally {
       setLoading(false);
     }
@@ -78,7 +77,7 @@ const AdminPanel = () => {
         setUsers(users.filter(u => u.id !== userId));
       }
     } catch (err) {
-      console.error('Error deleting user:', err);
+      // Handle silently
     }
   };
 

@@ -35,10 +35,6 @@ async def scan_email(data: EmailScan, current_user: dict = Depends(get_current_u
 
 @router.post("/scan-file")
 async def scan_file(file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
-    """Accept a file upload and run phishing-oriented checks:
-    - basic file analysis (extension, filename keywords)
-    - attempt to decode text and run content analysis for phishing indicators
-    """
     try:
         file_path = os.path.join(UPLOAD_DIR, file.filename)
         async with aiofiles.open(file_path, 'wb') as f:

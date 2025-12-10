@@ -25,7 +25,7 @@ const AdminPage = () => {
       setPendingThreats(threatsRes.data.threats || []);
       setUsers(usersRes.data.users || []);
     } catch (error) {
-      console.error('Failed to fetch admin data:', error);
+      // Handle silently
     } finally {
       setLoading(false);
     }

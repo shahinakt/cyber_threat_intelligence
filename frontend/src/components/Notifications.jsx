@@ -17,7 +17,7 @@ const Notifications = () => {
       setNotifications(data);
       setUnreadCount(data.filter(n => !n.read).length);
     } catch (error) {
-      console.error('Failed to fetch notifications:', error);
+      // Handle silently
     }
   };
 
@@ -29,7 +29,7 @@ const Notifications = () => {
       );
       setUnreadCount(prev => Math.max(0, prev - 1));
     } catch (error) {
-      console.error('Failed to mark as read:', error);
+      // Handle silently
     }
   };
 

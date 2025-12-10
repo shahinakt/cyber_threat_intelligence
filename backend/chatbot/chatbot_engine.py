@@ -96,7 +96,6 @@ class ChatbotEngine:
             }
     
     def calculate_similarity(self, text1: str, text2: str) -> float:
-        """Simple word overlap similarity"""
         words1 = set(re.findall(r'\w+', text1))
         words2 = set(re.findall(r'\w+', text2))
         

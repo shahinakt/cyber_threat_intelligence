@@ -30,7 +30,6 @@ function App() {
       const userData = await authService.getCurrentUser();
       setUser(userData);
     } catch (error) {
-      console.error('Failed to fetch user data:', error);
       authService.logout();
       setIsAuthenticated(false);
     }

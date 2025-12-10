@@ -24,7 +24,7 @@ const GlobalDashboardPage = () => {
       setMitreData(mitreRes.data.mitre_techniques || []);
       setTimeline(timelineRes.data.timeline || []);
     } catch (error) {
-      console.error('Failed to fetch global data:', error);
+      // Handle silently
     } finally {
       setLoading(false);
     }

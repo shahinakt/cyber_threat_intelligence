@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './UserDashboard.css';
 
 const UserDashboard = () => {
   const [user, setUser] = useState(null);
@@ -40,7 +39,7 @@ const UserDashboard = () => {
         setStats(data.stats || stats);
       }
     } catch (err) {
-      console.error('Error fetching dashboard data:', err);
+      // Handle silently
     } finally {
       setLoading(false);
     }

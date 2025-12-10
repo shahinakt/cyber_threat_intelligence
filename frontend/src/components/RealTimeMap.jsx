@@ -20,7 +20,7 @@ const RealTimeMap = () => {
       const response = await api.get('/dashboard/threat-map');
       setThreatLocations(response.data.locations || []);
     } catch (error) {
-      console.error('Failed to fetch threat locations:', error);
+      // Handle silently
     } finally {
       setLoading(false);
     }

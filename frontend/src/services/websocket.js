@@ -17,7 +17,6 @@ class WebSocketService {
       this.ws = new WebSocket(`${WS_URL}/${userId}`);
 
       this.ws.onopen = () => {
-        console.log('WebSocket connected');
         if (this.reconnectTimer) {
           clearTimeout(this.reconnectTimer);
           this.reconnectTimer = null;
@@ -38,7 +37,6 @@ class WebSocketService {
       };
 
       this.ws.onclose = () => {
-        console.log('WebSocket disconnected');
         this.reconnect(userId);
       };
     } catch (error) {
@@ -51,7 +49,6 @@ class WebSocketService {
     if (this.reconnectTimer) return;
 
     this.reconnectTimer = setTimeout(() => {
-      console.log('Attempting to reconnect WebSocket...');
       this.connect(userId);
     }, this.reconnectInterval);
   }

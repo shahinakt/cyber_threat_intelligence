@@ -9,10 +9,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 1440  # 24 hours
 
 
 def hash_password(password: str) -> str:
-    """Hash a plaintext password using bcrypt (pyca/bcrypt).
-
-    Returns the hashed password as a UTF-8 string suitable for storage.
-    """
     if isinstance(password, str):
         password = password.encode("utf-8")
     hashed = bcrypt.hashpw(password, bcrypt.gensalt())

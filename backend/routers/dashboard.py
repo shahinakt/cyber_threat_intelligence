@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends
-import logging
 from routers.auth import get_current_user
 from database import get_db
 from datetime import datetime, timedelta
@@ -102,11 +101,6 @@ async def get_user_stats(current_user: dict = Depends(get_current_user)):
     ]
     severity_data = await db.threats.aggregate(severity_pipeline).to_list(None)
     
-    # Add some logging to help debug user stats issues
-    logger = logging.getLogger(__name__)
-    logger.info(f"Fetching user stats for user_id={user_id}, total_submitted={user_threats}")
-
-    # Also return a small sample of the user's recent threats to help the frontend debug
     recent_user_threats_cursor = db.threats.find({"user_id": user_id}).sort("timestamp", -1).limit(5)
     recent_user_threats = await recent_user_threats_cursor.to_list(length=5)
 

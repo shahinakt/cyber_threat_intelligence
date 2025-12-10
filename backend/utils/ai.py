@@ -24,9 +24,6 @@ SEVERITY_KEYWORDS = {
 }
 
 def classify_threat(description: str, threat_type: str) -> dict:
-    """
-    Classifies threat using keyword matching and returns MITRE ATT&CK mapping
-    """
     description_lower = description.lower()
     
     # Determine severity based on keywords
@@ -54,9 +51,6 @@ def classify_threat(description: str, threat_type: str) -> dict:
     }
 
 def extract_indicators(text: str) -> dict:
-    """
-    Extract IoCs (IPs, domains, hashes) using regex patterns
-    """
     import re
     
     indicators = {
@@ -85,9 +79,6 @@ def extract_indicators(text: str) -> dict:
     return indicators
 
 def analyze_with_cv(image_path: str) -> dict:
-    """
-    Computer vision analysis for screenshot-based threat detection
-    """
     import cv2
     
     try:

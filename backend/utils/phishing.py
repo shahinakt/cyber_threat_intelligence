@@ -17,9 +17,6 @@ SUSPICIOUS_DOMAINS = [
 ]
 
 def analyze_url(url: str, _depth: int = 0) -> dict:
-    """
-    Analyze URL for phishing indicators
-    """
     score = 0
     indicators = []
     
@@ -183,9 +180,6 @@ def analyze_url(url: str, _depth: int = 0) -> dict:
         }
 
 def analyze_content(html: str, url: str) -> tuple:
-    """
-    Analyze webpage content for phishing indicators
-    """
     score = 0
     indicators = []
     
@@ -228,9 +222,6 @@ def analyze_content(html: str, url: str) -> tuple:
     return score, indicators
 
 def check_email_phishing(email_body: str, sender: str) -> dict:
-    """
-    Analyze email for phishing characteristics
-    """
     score = 0
     indicators = []
     

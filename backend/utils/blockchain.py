@@ -17,9 +17,6 @@ def get_web3():
         return None
 
 def log_to_blockchain(threat_id: str, threat_data: dict) -> str:
-    """
-    Log threat data to blockchain for immutable record
-    """
     w3 = get_web3()
     
     # Fallback to hash-based logging if blockchain unavailable
@@ -73,9 +70,6 @@ def log_to_blockchain(threat_id: str, threat_data: dict) -> str:
         return create_hash_proof(threat_id, threat_data)
 
 def create_hash_proof(threat_id: str, threat_data: dict) -> str:
-    """
-    Create cryptographic hash as proof (fallback when blockchain unavailable)
-    """
     data_string = json.dumps({
         "threat_id": threat_id,
         "timestamp": str(datetime.utcnow()),
@@ -85,9 +79,6 @@ def create_hash_proof(threat_id: str, threat_data: dict) -> str:
     return hashlib.sha256(data_string.encode()).hexdigest()
 
 def verify_blockchain_record(threat_id: str, blockchain_hash: str) -> bool:
-    """
-    Verify if threat exists on blockchain
-    """
     w3 = get_web3()
     if not w3 or not CONTRACT_ADDRESS:
         return False
@@ -110,9 +101,6 @@ def verify_blockchain_record(threat_id: str, blockchain_hash: str) -> bool:
         return False
 
 def get_blockchain_stats() -> dict:
-    """
-    Get blockchain connection stats
-    """
     w3 = get_web3()
     if not w3:
         return {"connected": False, "message": "Blockchain unavailable"}

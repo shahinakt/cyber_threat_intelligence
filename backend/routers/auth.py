@@ -1,6 +1,4 @@
 from fastapi import APIRouter, HTTPException, Depends, status
-import logging
-import traceback
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from models.user_model import UserLogin, UserRegister, UserResponse
 from auth.jwt_handler import hash_password, verify_password, create_access_token, decode_access_token
@@ -9,8 +7,6 @@ from datetime import datetime
 
 router = APIRouter()
 security = HTTPBearer()
-
-logger = logging.getLogger(__name__)
 
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
     token = credentials.credentials
@@ -48,12 +44,8 @@ async def register(user: UserRegister):
             "user_id": str(result.inserted_id)
         }
     except HTTPException:
-        # re-raise known HTTPExceptions (400, etc.) without logging twice
         raise
     except Exception as e:
-        # Log full traceback to console for debugging
-        logger.exception("Unhandled error in register endpoint: %s", e)
-        # Optionally include traceback.print_exc() if needed
         raise HTTPException(status_code=500, detail="Internal server error")
 
 @router.post("/login", response_model=dict)

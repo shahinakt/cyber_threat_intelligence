@@ -25,7 +25,7 @@ const UserDashboardPage = () => {
       setUserStats(userStatsRes.data);
       setRecentThreats(threatsRes.data);
     } catch (error) {
-      console.error('Failed to fetch dashboard data:', error);
+      // Handle silently
     } finally {
       setLoading(false);
     }

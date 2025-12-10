@@ -7,7 +7,7 @@ class User(BaseModel):
     password: str
     full_name: str
     organization: Optional[str] = None
-    role: str = "user"  # user, admin
+    role: str = "user"
     created_at: datetime = Field(default_factory=datetime.utcnow)
     is_active: bool = True
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './GlobalDashboard.css';
 
 const GlobalDashboard = () => {
   const [file, setFile] = useState(null);
@@ -85,7 +84,6 @@ const GlobalDashboard = () => {
         setProgress(0);
       }
     } catch (err) {
-      console.error('Error scanning file:', err);
       alert('Network error. Please try again.');
       setScanning(false);
       setProgress(0);

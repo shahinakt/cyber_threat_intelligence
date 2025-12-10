@@ -4,13 +4,12 @@ motor
 pymongo
 pydantic
 python-jose[cryptography]
-passlib[bcrypt]
+bcrypt
 python-multipart
 websockets
 opencv-python
 numpy
 scikit-learn
-tensorflow
 requests
 python-dotenv
 aiofiles
